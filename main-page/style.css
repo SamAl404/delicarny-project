@@ -34,3 +34,19 @@ p{
     background-color: #854836;
     border-color: #854836;
 }
+
+#heading2{
+    font-family: "Bangers", system-ui;
+    font-weight: 400;
+    font-size: 5vw;
+    text-align: center;
+    margin: 20px;
+}
+
+#main-footer{
+    background-color: #FFB22C;
+}
+
+#heading-ubi{
+    color: white;
+}
