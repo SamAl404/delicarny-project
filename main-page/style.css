@@ -8,6 +8,11 @@
     margin: 0;
 }
 
+#navbar{
+    background: #FFB22C;
+}
+
+
 h1{
     font-family: "Bangers", system-ui;
     font-weight: 400;
@@ -27,7 +32,7 @@ p{
     height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
-    opacity: 80%;
+    opacity: 150%;
 }
 
 #button-header{
