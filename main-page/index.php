@@ -160,6 +160,52 @@
       </div>
     </div>
   </div>
+
+  <div class="container mt-5 mb-5">
+    <h2 class="text-center mb-4">Contactanos</h2>
+  <form action=" process-contact.php" method="POST">
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Ingrese su nombre" required style="background-color: #FFB22C;">
+      </div>
+
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Dirección email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su email" required style="background-color: #FFB22C;">
+      </div>
+
+
+      <div class="mb-3">
+        <label for="subject" class="form-label">Motivo</label>
+        <select class="form-select" id="subject" name="subject" required style="background-color: #FFB22C;">
+          <option value="" disabled selected>Seleccione su motivo</option>
+          <option value="Order Issue">Problema con orden</option>
+          <option value="Feedback">Sugerencias</option>
+          <option value="General Question">Pregunta general</option>
+        </select>
+      </div>
+
+
+      <div class="mb-3">
+        <label for="orderNumber" class="form-label">Numero de orden (Opcional)</label>
+        <input type="text" class="form-control" id="orderNumber" name="orderNumber" placeholder="Ingrese su numero de orden" style="background-color: #FFB22C;">
+      </div>
+
+
+      <div class="mb-3">
+        <label for="message" class="form-label">Descripción</label>
+        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Ingrese su mensaje aqui" required style="background-color: #FFB22C;"></textarea>
+      </div>
+
+
+      <div class="text-center">
+        <button type="submit" class="btn" id="button-form">Enviar</button>
+      </div>
+      </form>
+  </div>
+
   <div class="container-fluid" id="main-footer">
     <footer
       class="d-flex flex-wrap justify-content-between align-items-center py-3 my-0 border-top">
