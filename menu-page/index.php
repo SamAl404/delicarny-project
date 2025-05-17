@@ -43,7 +43,10 @@
               <a href="" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Contacto</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
+              <a href="../pagos-page/pasarela.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
+            </li>
+            <li class="nav-item">
+              <a href="../adminLogin/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Administrador</a>
             </li>
           </ul>
         </div>

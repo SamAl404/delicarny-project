@@ -1,0 +1,97 @@
+/* Fondo principal */
+body {
+  background-color: #1a1a1a;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Contenedor general */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Caja de login */
+.login-box {
+  background-color: #ffb42b;
+  border-radius: 25px;
+  padding: 60px 20px;
+  width: 400px;
+  height: auto;
+  position: relative;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Botón de volver */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.back-button img {
+  width: 30px;
+  height: 30px;
+}
+
+/* Logo de Delicarny */
+.logo {
+  display: block;
+  margin: 0 auto 20px auto;
+  width: 200px;
+}
+
+/* Formulario de login */
+.login-form {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px 20px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Título Administrador */
+.login-form h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #000;
+}
+
+/* Inputs */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  background-color: #2b2b2b;
+  color: white;
+  border-radius: 5px;
+}
+
+/* Placeholder */
+.login-form input::placeholder {
+  color: #a0a0a0;
+}
+
+/* Botón de iniciar sesión */
+.login-form button {
+  background-color: #ffb42b;
+  color: black;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+/* Hover en el botón */
+.login-form button:hover {
+  background-color: #e09b00;
+}

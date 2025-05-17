@@ -1,0 +1,99 @@
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* Para apilar los elementos verticalmente */
+    justify-content: center; /* Centra horizontalmente el contenedor-pago */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.contenedor-pago {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    /* max-width: 600px; */
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.metodo-pago {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.metodo-pago h2 p li {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.qr-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.qr-container img {
+    max-width: 150px;
+    height: auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.nota {
+    text-align: center;
+    color: #777;
+    font-size: 0.9em;
+    margin-top: 20px;
+}
+
+.custom-footer {
+    padding-top: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid #dee2e6; /* Color del borde de Bootstrap */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente los elementos hijos */
+    text-align: center; /* Centra el texto dentro de los elementos */
+}
+
+.custom-footer p {
+    margin-bottom: 0.5rem;
+    color: #6c757d; /* Color de texto secundario de Bootstrap */
+}
+
+.custom-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Centra los enlaces horizontalmente */
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6; /* Color del borde de Bootstrap */
+    margin-bottom: 1rem;
+}
+
+.custom-footer ul li {
+    margin: 0 0.5rem;
+}
+
+.custom-footer ul li a {
+    color: #6c757d; /* Color de enlace secundario de Bootstrap */
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.custom-footer ul li a:hover {
+    text-decoration: underline;
+}

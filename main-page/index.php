@@ -20,7 +20,7 @@
       <div class="container">
         <a href="#" class="navbar-brand">
           <img
-            src="./assets/WhatsApp Image 2025-04-01 at 19.19.26_f317ec09.jpg"
+            src="./assets/Delicarny-logo.jpg"
             alt="Delicarny logo"
             width="100px" />
         </a>
@@ -44,7 +44,10 @@
               <a href="" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Contacto</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
+              <a href="../pagos-page/pasarela.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
+            </li>
+            <li class="nav-item">
+              <a href="../adminLogin/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Administrador</a>
             </li>
           </ul>
         </div>
