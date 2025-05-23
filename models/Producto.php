@@ -18,8 +18,8 @@ class Producto
     public function read()
     {
         $query = "SELECT p.*, c.nombre AS nombre_categoria 
-                  FROM producto p 
-                  INNER JOIN categoria c ON p.id_categoria = c.id_categoria";
+                FROM producto p 
+                INNER JOIN categoria c ON p.id_categoria = c.id_categoria";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -29,8 +29,8 @@ class Producto
     public function create()
     {
         $query = "INSERT INTO " . $this->table . " 
-                 (nombre, valor_unitario, estado, id_categoria)
-                 VALUES (?, ?, ?, ?)";
+                (nombre, valor_unitario, estado, id_categoria)
+                VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bind_param(
@@ -52,11 +52,11 @@ class Producto
     public function update()
     {
         $query = "UPDATE " . $this->table . " SET 
-                  nombre = ?,
-                  valor_unitario = ?,
-                  estado = ?,
-                  id_categoria = ?
-                  WHERE id_producto = ?";
+                nombre = ?,
+                valor_unitario = ?,
+                estado = ?,
+                id_categoria = ?
+                WHERE id_producto = ?";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bind_param(
@@ -98,4 +98,19 @@ class Producto
         $this->id_producto = htmlspecialchars(strip_tags($this->id_producto));
         return $stmt->execute();
     }
+
+    public function obtenerProductosPorCategoria()
+    {
+        $query = "SELECT p.id_producto, p.nombre, p.valor_unitario, c.nombre AS nombre_categoria
+                FROM producto p
+                INNER JOIN categoria c ON p.id_categoria = c.id_categoria
+                WHERE p.estado = 'Activo'
+                ORDER BY c.nombre, p.nombre";
+
+        $stmt = $this->conn->prepare($query);  // Cambiado $this->db por $this->conn
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
 }

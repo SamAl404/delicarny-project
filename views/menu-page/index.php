@@ -1,295 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+require_once '../../config/database.php';
+require_once '../../models/Producto.php';
 
+$db = database::conexion();
+$productoModel = new Producto($db);
+$productosPlano = $productoModel->obtenerProductosPorCategoria();
+// Agrupar productos por categoría
+$productosAgrupados = [];
+foreach ($productosPlano as $producto) {
+    $categoria = $producto['nombre_categoria'];
+    if (!isset($productosAgrupados[$categoria])) {
+        $productosAgrupados[$categoria] = [];
+    }
+    $productosAgrupados[$categoria][] = $producto;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delicarny</title>
-  <link rel="shortcut icon" href="./assets/icon2.jpg" type="image/x-icon">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Delicarny - Menú</title>
+  
+  <link rel="shortcut icon" href="assets/icon2.jpg" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
     rel="stylesheet"
     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
     crossorigin="anonymous" />
+    <link rel="stylesheet" href="style.css" />
 </head>
-<str>
+<body>
+
+  <!-- NAVBAR -->
   <div class="container-fluid p-0" style="background-color: #FFB22C;">
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
         <a href="#" class="navbar-brand">
-          <img
-            src="./assets/Delicarny-logo.jpg"
-            alt="Delicarny logo"
-            width="100px" />
+          <img src="assets/Delicarny-logo.jpg" alt="Delicarny logo" width="100px" />
         </a>
-
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navmenu">
-          <span class="navbar-toggler-icon "></span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navmenu">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a href="../../index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Inicio</a>
-            </li>
-            <li class="nav-item " style="font-weight: bold; color: white; text-transform: uppercase;">
-              <a href="./index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Menú</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://api.whatsapp.com/send/?phone=573044334678&text&type=phone_number&app_absent=0" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Contacto</a>
-            </li>
-            <li class="nav-item">
-              <a href="../pagos-page/pasarela.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
-            </li>
-            <li class="nav-item">
-              <a href="../admin/adminLogin/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Administrador</a>
-            </li>
+            <li class="nav-item"><a href="../../index.php" class="nav-link text-white fw-bold text-uppercase">Inicio</a></li>
+            <li class="nav-item"><a href="./index.php" class="nav-link text-white fw-bold text-uppercase">Menú</a></li>
+            <li class="nav-item"><a href="https://api.whatsapp.com/send/?phone=573044334678" class="nav-link text-white fw-bold text-uppercase">Contacto</a></li>
+            <li class="nav-item"><a href="../pagos-page/pasarela.php" class="nav-link text-white fw-bold text-uppercase">Pago</a></li>
+            <li class="nav-item"><a href="../admin/adminLogin/index.php" class="nav-link text-white fw-bold text-uppercase">Administrador</a></li>
           </ul>
         </div>
       </div>
     </nav>
   </div>
 
-  <div class="album py-5 bg-body-tertiary">
-    <div class="container mt-4">
-      <h1 class="mb-3">Hamburgesas</h1>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
+  <!-- MENÚ DINÁMICO -->
+  <div class="container py-5">
+  <h1 class="titulo-menu text-center mb-5">Menú de Productos</h1>
+
+  <?php
+  session_start();
+  $carrito = $_SESSION['carrito'] ?? [];
+
+  $total = 0;
+  foreach ($carrito as $item) {
+      $total += $item['precio'] * $item['cantidad'];
+  }
+  ?>
+
+  <div style="background:#f0f0f0; padding:10px; margin-bottom:15px;">
+      <strong>Total del carrito:</strong> $<?= number_format($total, 2) ?>
+      <a href="../carrito/index.php" style="margin-left: 20px;">Ver carrito</a>
+  </div>
+
+
+  <?php foreach ($productosAgrupados as $categoria => $items): ?>
+    <h3 class="titulo-categoria mt-4 mb-3"><?= htmlspecialchars($categoria) ?></h3>
+    <div class="row mb-4">
+      <?php foreach ($items as $producto): ?>
+        <div class="col-md-4 mb-3">
           <div class="card">
-            <img class="card-img-top" src="./assets/hamburger1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
             <div class="card-body" style="background-color: #FFB22C;">
-              <h3>Sencilla</h3>
-              <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <strong class="text-body-secondary">$4.000</strong>
-              </div>
+              <h5 class="card-title"><?= htmlspecialchars($producto['nombre']) ?></h5>
+              <p class="card-text fw-bold">$<?= number_format($producto['valor_unitario'], 0, ',', '.') ?></p>
+              <form action="../../controllers/CarritoController.php" method="POST">
+                <input type="hidden" name="id_producto" value="<?= $producto['id_producto'] ?>">
+                <input type="hidden" name="nombre" value="<?= htmlspecialchars($producto['nombre']) ?>">
+                <input type="hidden" name="precio" value="<?= $producto['valor_unitario'] ?>">
+                <button type="submit" name="agregar_carrito" class="btn btn-dark btn-sm">Agregar al carrito</button>
+              </form>
             </div>
           </div>
         </div>
-        <div class="col">
-          <div class="card">
-            <img class="card-img-top" src="./assets/hamburger1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-            <div class="card-body" style="background-color: #FFB22C;">
-              <h3>Especial</h3>
-              <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <strong class="text-body-secondary">$6.000</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img class="card-img-top" src="./assets/hamburger1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-            <div class="card-body" style="background-color: #FFB22C;">
-              <h3>Doble carne</h3>
-              <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <strong class="text-body-secondary">$8.000</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card">
-            <img class="card-img-top" src="./assets/hamburger1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-            <div class="card-body" style="background-color: #FFB22C;">
-              <h3>Filete de pollo</h3>
-              <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <strong class="text-body-secondary">$9.000</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <img class="card-img-top" src="./assets/hamburger1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-            <div class="card-body" style="background-color: #FFB22C;">
-              <h3>Mixta</h3>
-              <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <strong class="text-body-secondary">$11.000</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <?php endforeach; ?>
     </div>
-  </div>
-  <div class="container mt-4">
-    <h1 class="mb-3">Perros - Perras</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/hotdog1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Sencillo</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$4.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/hotdog1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Especial</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$6.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/hotdog1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Perras</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$9.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
+  <?php endforeach; ?>
+</div>
 
-
-    </div>
-  </div>
-  </div>
-
-  <div class="container mt-4">
-    <h1 class="mb-3">Carnes</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/steak1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Chuzo de pollo</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$11.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/steak1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Carne de res y cerdo</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$11.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/steak1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Carne de res y cerdo gratinado</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$13.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-    </div>
-  </div>
-
-  <div class="container mt-4">
-    <h1 class="mb-3">Maicitos</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/maicitos1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Sencillos</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$6.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/maicitos1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Especial</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$10.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-    </div>
-  </div>
-  <div class="container mt-4">
-    <h1 class="mb-3">Salchipapas - Arepaburger</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/salchipapas.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Sencillos</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$6.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img class="card-img-top" src="./assets/arepaburger1.jpg" alt="Sencilla Burger" width="100%" height="225" style="object-fit: cover;">
-          <div class="card-body" style="background-color: #FFB22C;">
-            <h3>Especial</h3>
-            <p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis eius pariatur neque recusandae, </p>
-            <div class="d-flex justify-content-between align-items-center">
-              <strong class="text-body-secondary">$10.000</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-    </div>
-  </div>
-  </div>
-
-
-  </div>
-
-
-
-  <div class="container-fluid mt-4" id="main-footer">
+  <!-- FOOTER -->
+  <div class="container-fluid" id="main-footer">
     <footer
       class="d-flex flex-wrap justify-content-between align-items-center py-3 my-0 border-top">
       <div class="col-md-4 d-flex align-items-center">
@@ -333,10 +146,10 @@
       </ul>
     </footer>
   </div>
+
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
     crossorigin="anonymous"></script>
-  </body>
-
+</body>
 </html>

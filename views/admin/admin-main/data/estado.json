@@ -1,1 +1,9 @@
-[]
+[
+    {
+        "nombre": "ArepaBurger",
+        "descripcion": "Especial x2",
+        "subtotal": 10000,
+        "total": 36000,
+        "estado": "Aceptado"
+    }
+]

@@ -1,0 +1,56 @@
+/* carrito-style.css */
+.carrito-table th {
+  background-color: #ffb22c;
+  color: #222;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.carrito-table td {
+  background-color: #fff8e1;
+  color: #333;
+  vertical-align: middle;
+}
+
+.btn {
+  font-weight: 600;
+}
+
+h1,
+h3 {
+  font-family: "Poppins", sans-serif;
+}
+
+h3 {
+  color: #d35400;
+}
+
+input,
+select {
+  font-family: "Open Sans", sans-serif;
+}
+
+input[type="number"] {
+  width: 80px;
+}
+
+form label {
+  font-weight: 600;
+  color: #333;
+}
+
+h1.text-success {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+p.lead {
+  font-size: 1.25rem;
+  color: #444;
+}
+
+.btn-outline-dark {
+  padding: 10px 25px;
+  font-weight: 600;
+  text-transform: uppercase;
+}

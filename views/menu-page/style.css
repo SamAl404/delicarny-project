@@ -1,20 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
-
-#main-footer{
-    background-color: #FFB22C;
+body {
+    background: linear-gradient(to right, #fff, #f9e3c7);
 }
 
-h1,h3{
-    font-family: "Bangers", system-ui;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 17vw;
+.card {
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.titulo-menu {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #222;
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    border-bottom: 4px solid #FFB22C;
+}
 
+.titulo-categoria {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    border-left: 6px solid #FFB22C;
+    padding-left: 12px;
+}
 
-p{
-    color: black;
-    font-family: "Open Sans", sans-serif;
-    font-size: 15px;
+.navbar {
+    background: #FFB22C;
+    padding: 15px;
+    border-bottom: 2px solid #333;
+}
+
+#main-footer {
+    background-color: #ffb22c !important;
 }

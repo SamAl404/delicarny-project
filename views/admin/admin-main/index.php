@@ -4,65 +4,92 @@ if (!isset($_SESSION['admin'])) {
     header("Location: ../adminLogin/index.php");
     exit();
 }
-?>
 
+require_once '../../../config/database.php';
+$db = Database::conexion();
 
-<?php
-function getData($file) {
-    return json_decode(file_get_contents($file), true) ?? [];
+// Pedidos pendientes
+$pendientes = [];
+$sql = "SELECT p.id_pedido, p.valor_total, p.estado, tp.tipo AS tipo_pago
+        FROM pedido p
+        LEFT JOIN tipo_pago tp ON p.id_tipoPago = tp.id_tipoPago
+        WHERE LOWER(p.estado) = 'pendiente'";
+$result = $db->query($sql);
+while ($row = $result->fetch_assoc()) {
+    // Obtener subtotal del detalle_pedido
+    $id_pedido = $row['id_pedido'];
+    $resDetalle = $db->query("SELECT SUM(sub_total) as subtotal FROM detalle_pedido WHERE id_pedido = $id_pedido");
+    $detalle = $resDetalle->fetch_assoc();
+    $row['subtotal'] = $detalle['subtotal'] ?? 0;
+    $pendientes[] = $row;
 }
 
-function saveData($file, $data) {
-    file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
+// Pedidos en estado aceptado o en preparación
+$estado = [];
+$sql = "SELECT p.id_pedido, p.valor_total, p.estado, tp.tipo AS tipo_pago
+        FROM pedido p
+        LEFT JOIN tipo_pago tp ON p.id_tipoPago = tp.id_tipoPago
+        WHERE LOWER(p.estado) IN ('aceptado', 'en preparación')";
+$result = $db->query($sql);
+while ($row = $result->fetch_assoc()) {
+    $id_pedido = $row['id_pedido'];
+    $resDetalle = $db->query("SELECT SUM(sub_total) as subtotal FROM detalle_pedido WHERE id_pedido = $id_pedido");
+    $detalle = $resDetalle->fetch_assoc();
+    $row['subtotal'] = $detalle['subtotal'] ?? 0;
+    $estado[] = $row;
 }
 
-$pendientesFile = 'data/pendientes.json';
-$estadoFile = 'data/estado.json';
-$historialFile = 'data/historial.json';
-
-$pendientes = getData($pendientesFile);
-$estado = getData($estadoFile);
-
+// Cambiar estado del pedido
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['aceptar'])) {
-        $id = $_POST['id'];
-        $pedido = $pendientes[$id];
-        $pedido['estado'] = 'Aceptado';
-        $estado[] = $pedido;
-        unset($pendientes[$id]);
-        saveData($pendientesFile, $pendientes);
-        saveData($estadoFile, $estado);
+        $id = intval($_POST['id_pedido']);
+        $db->query("UPDATE pedido SET estado = 'en preparación' WHERE id_pedido = $id");
     }
-
+    if (isset($_POST['rechazar'])) {
+        $id = intval($_POST['id_pedido']);
+        $db->query("UPDATE pedido SET estado = 'Cancelado' WHERE id_pedido = $id");
+    }
     if (isset($_POST['actualizar_estado'])) {
-        $id = $_POST['id'];
-        $nuevoEstado = $_POST['estado'];
-
-        if ($nuevoEstado === 'Terminar Pedido') {
-            $historial = getData($historialFile);
-            $historial[] = $estado[$id];
-            unset($estado[$id]);
-            saveData($historialFile, $historial);
-        } else {
-            $estado[$id]['estado'] = $nuevoEstado;
+        $id = intval($_POST['id_pedido']);
+        $nuevoEstado = $db->real_escape_string($_POST['estado']);
+        if ($nuevoEstado === 'Finalizar') {
+            $db->query("UPDATE pedido SET estado = 'Finalizado' WHERE id_pedido = $id");
+        } elseif ($nuevoEstado === 'Cancelar') {
+            $db->query("UPDATE pedido SET estado = 'Cancelado' WHERE id_pedido = $id");
         }
-
-        saveData($estadoFile, $estado);
     }
-
     header('Location: index.php');
     exit;
+}
+
+function obtenerNombresProductos($db, $id_pedido)
+{
+    $productos = [];
+    $sql = "SELECT pr.nombre, dp.cantidad
+            FROM detalle_pedido dp
+            INNER JOIN producto pr ON dp.id_producto = pr.id_producto
+            WHERE dp.id_pedido = $id_pedido";
+    $result = $db->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        $productos[] = [
+            'nombre' => $row['nombre'],
+            'cantidad' => $row['cantidad']
+        ];
+    }
+    return $productos;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Administrador de Pedidos</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="./assets/icon2.jpg" type="image/x-icon">
 </head>
+
 <body>
 
     <div class="top-bar">
@@ -77,42 +104,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Administrador de pedidos</h1>
     <div class="container">
 
+        <!-- Columna de pendientes de aceptación -->
         <div class="column">
-            <h2>Pendientes de aceptacion</h2>
-            <?php foreach ($pendientes as $id => $pedido): ?>
+            <h2>Pendientes de aceptación</h2>
+            <?php foreach ($pendientes as $pedido): ?>
                 <div class="card">
-                    <h3><?= $pedido['nombre'] ?></h3>
-                    <p><?= $pedido['descripcion'] ?></p>
-                    <p>Subtotal: $<?= $pedido['subtotal'] ?></p>
-                    <p>Total: $<?= $pedido['total'] ?></p>
+                    <h3>Pedido #<?= $pedido['id_pedido'] ?></h3>
+                    <strong>Productos:</strong>
+                    <ul>
+                        <?php foreach (obtenerNombresProductos($db, $pedido['id_pedido']) as $producto): ?>
+                            <li><?= htmlspecialchars($producto['nombre']) ?> (x<?= $producto['cantidad'] ?>)</li>
+                        <?php endforeach; ?>
+                    </ul>
+                    
+                    <p>Total: $<?= number_format($pedido['valor_total'], 2) ?></p>
+                    <p>Tipo de pago: <?= htmlspecialchars($pedido['tipo_pago']) ?></p>
                     <form method="post">
-                        <input type="hidden" name="id" value="<?= $id ?>">
-                        <button name="aceptar">Aceptar</button>
-                        <button name="rechazar">Rechazar</button>
+                        <input type="hidden" name="id_pedido" value="<?= $pedido['id_pedido'] ?>">
+                        <button type="submit" name="aceptar">Aceptar</button>
+                        <button type="submit" name="rechazar">Rechazar</button>
                     </form>
                 </div>
             <?php endforeach; ?>
         </div>
 
+        <!-- Columna de estado -->
         <div class="column">
             <h2>Estado</h2>
-            <?php foreach ($estado as $id => $pedido): ?>
+            <?php foreach ($estado as $pedido): ?>
                 <div class="card">
-                    <h3><?= $pedido['nombre'] ?></h3>
-                    <p><?= $pedido['descripcion'] ?></p>
-                    <p>Subtotal: $<?= $pedido['subtotal'] ?></p>
-                    <p>Total: $<?= $pedido['total'] ?></p>
+                    <h3>Pedido #<?= $pedido['id_pedido'] ?></h3>
+                    <strong>Productos:</strong>
+                    <ul>
+                        <?php foreach (obtenerNombresProductos($db, $pedido['id_pedido']) as $producto): ?>
+                            <li><?= htmlspecialchars($producto['nombre']) ?> (x<?= $producto['cantidad'] ?>)</li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <p>Total: $<?= number_format($pedido['valor_total'], 2) ?></p>
+                    <p>Tipo de pago: <?= htmlspecialchars($pedido['tipo_pago']) ?></p>
                     <form method="post">
-                        <input type="hidden" name="id" value="<?= $id ?>">
-                        <select name="estado">
-                            <option <?= $pedido['estado'] === 'Aceptado' ? 'selected' : '' ?>>Aceptado</option>
-                            <option <?= $pedido['estado'] === 'En preparación' ? 'selected' : '' ?>>En preparación</option>
-                            <option <?= $pedido['estado'] === 'Empaquetado' ? 'selected' : '' ?>>Empaquetado</option>
-                            <option <?= $pedido['estado'] === 'Por entregar' ? 'selected' : '' ?>>Por entregar</option>
-                            <option <?= $pedido['estado'] === 'Pendiente por recogida' ? 'selected' : '' ?>>Pendiente por recogida</option>
-                            <option>Terminar Pedido</option>
+                        <input type="hidden" name="id_pedido" value="<?= $pedido['id_pedido'] ?>">
+                        <select name="estado" required>
+                            <option value="Finalizar">Finalizar</option>
+                            <option value="Cancelar">Cancelar</option>
                         </select>
-                        <button name="actualizar_estado">Actualizar</button>
+                        <button type="submit" name="actualizar_estado">Actualizar</button>
                     </form>
                 </div>
             <?php endforeach; ?>
@@ -120,4 +157,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </div>
 </body>
+
 </html>
