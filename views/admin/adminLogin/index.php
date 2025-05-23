@@ -17,7 +17,7 @@ $error = $_GET['error'] ?? null;
 <div class="container">
   <div class="login-box">
     
-    <a href="../main-page/index.php" class="back-button">
+    <a href="../../../index.php"class="back-button">
       <img src="./assets/back-arrow.png" alt="Regresar" />
     </a>
 

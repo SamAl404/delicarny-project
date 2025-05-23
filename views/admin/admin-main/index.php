@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="top-bar">
         <img src="assets/Delicarny-logo.jpg" alt="Logo" class="logo">
         <div class="nav-links">
+            <a href="../../../public/productos.php">Productos</a>
             <a href="historial.php">Historial</a>
             <a href="../adminLogin/logout.php">Cerrar sesión</a>
         </div>

@@ -34,19 +34,19 @@
         <div class="collapse navbar-collapse" id="navmenu">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a href="../main-page/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Inicio</a>
+              <a href="../../index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Inicio</a>
             </li>
             <li class="nav-item " style="font-weight: bold; color: white; text-transform: uppercase;">
               <a href="./index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Menú</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Contacto</a>
+              <a href="https://api.whatsapp.com/send/?phone=573044334678&text&type=phone_number&app_absent=0" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Contacto</a>
             </li>
             <li class="nav-item">
               <a href="../pagos-page/pasarela.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
             </li>
             <li class="nav-item">
-              <a href="../adminLogin/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Administrador</a>
+              <a href="../admin/adminLogin/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Administrador</a>
             </li>
           </ul>
         </div>
@@ -306,7 +306,7 @@
 
       <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
         <li class="ms-3">
-          <a class="text-body-secondary" href="" aria-label="Instagram">
+          <a class="text-body-secondary" href="https://www.instagram.com/gastrobardelicarny/" aria-label="Instagram">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"

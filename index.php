@@ -5,13 +5,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Delicarny</title>
-  <link rel="shortcut icon" href="./assets/icon.jpg" type="image/x-icon">
+  <link rel="shortcut icon" href="./views/main-page/assets/icon.jpg" type="image/x-icon">
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
     rel="stylesheet"
     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
     crossorigin="anonymous" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./views/main-page/style.css" />
 </head>
 
 <body>
@@ -20,7 +20,7 @@
       <div class="container">
         <a href="#" class="navbar-brand">
           <img
-            src="./assets/Delicarny-logo.jpg"
+            src="./views/main-page/assets/Delicarny-logo.jpg"
             alt="Delicarny logo"
             width="100px" />
         </a>
@@ -38,16 +38,16 @@
               <a href="" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Inicio</a>
             </li>
             <li class="nav-item " style="font-weight: bold; color: white; text-transform: uppercase;">
-              <a href="../menu-page/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Menú</a>
+              <a href="./views/menu-page/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Menú</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Contacto</a>
+              <a href="https://api.whatsapp.com/send/?phone=573044334678&text&type=phone_number&app_absent=0" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Contacto</a>
             </li>
             <li class="nav-item">
-              <a href="../pagos-page/pasarela.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
+              <a href="./views/pagos-page/pasarela.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Pago</a>
             </li>
             <li class="nav-item">
-              <a href="../adminLogin/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Administrador</a>
+              <a href="./views/admin/adminLogin/index.php" class="nav-link" style="font-weight: bold; color: white; text-transform: uppercase;">Administrador</a>
             </li>
           </ul>
         </div>
@@ -62,7 +62,7 @@
         <div class="col-lg-6 mx-auto">
           <p class="mb-4">Paciencia y sabor la combinación perfecta</p>
           <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="../menu-page/index.php">
+            <a href="./views/menu-page/index.php">
               <button
                 type="button"
                 class="btn btn-outline btn-lg px-4 me-sm-3 "
@@ -103,19 +103,19 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img
-            src="./assets/pexels-jonathanborba-2983101.jpg"
+            src="./views/main-page/assets/pexels-jonathanborba-2983101.jpg"
             class="d-block w-100"
             alt="..." />
         </div>
         <div class="carousel-item">
           <img
-            src="./assets/pexels-dzeninalukac-1583884.jpg"
+            src="./views/main-page/assets/pexels-dzeninalukac-1583884.jpg"
             class="d-block w-100"
             alt="..." />
         </div>
         <div class="carousel-item">
           <img
-            src="./assets/pexels-caleboquendo-3023479.jpg"
+            src="./views/main-page/assets/pexels-caleboquendo-3023479.jpg"
             class="d-block w-100"
             alt="..." />
         </div>
@@ -143,7 +143,7 @@
       <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
         <div class="col-10 col-sm-8 col-lg-6">
           <img
-            src="./assets/WhatsApp Image 2025-04-01 at 17.41.43_deb06a71.jpg"
+            src="./views/main-page/assets/WhatsApp Image 2025-04-01 at 17.41.43_deb06a71.jpg"
             class="d-block mx-lg-auto img-fluid"
             alt="Bootstrap Themes"
             width="700"
@@ -226,7 +226,7 @@
 
       <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
         <li class="ms-3">
-          <a class="text-body-secondary" href="" aria-label="Instagram">
+          <a class="text-body-secondary" href="https://www.instagram.com/gastrobardelicarny/" aria-label="Instagram">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"

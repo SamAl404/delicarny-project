@@ -1,5 +1,6 @@
 <?php
-class Producto {
+class Producto
+{
     private $conn;
     private $table = 'producto';
 
@@ -9,25 +10,31 @@ class Producto {
     public $estado;
     public $id_categoria;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
-    public function read() {
-        $query = "SELECT * FROM " . $this->table;
+    public function read()
+    {
+        $query = "SELECT p.*, c.nombre AS nombre_categoria 
+                  FROM producto p 
+                  INNER JOIN categoria c ON p.id_categoria = c.id_categoria";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function create() {
+    public function create()
+    {
         $query = "INSERT INTO " . $this->table . " 
                  (nombre, valor_unitario, estado, id_categoria)
                  VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
-        
-        $stmt->bind_param("sdii",
+
+        $stmt->bind_param(
+            "sdii",
             $this->nombre,
             $this->valor_unitario,
             $this->estado,
@@ -42,7 +49,8 @@ class Producto {
         return $stmt->execute();
     }
 
-    public function update() {
+    public function update()
+    {
         $query = "UPDATE " . $this->table . " SET 
                   nombre = ?,
                   valor_unitario = ?,
@@ -50,8 +58,9 @@ class Producto {
                   id_categoria = ?
                   WHERE id_producto = ?";
         $stmt = $this->conn->prepare($query);
-        
-        $stmt->bind_param("sdiii",
+
+        $stmt->bind_param(
+            "sdiii",
             $this->nombre,
             $this->valor_unitario,
             $this->estado,
@@ -65,7 +74,24 @@ class Producto {
         return $stmt->execute();
     }
 
-    public function delete() {
+    public function delete()
+    {
+        // Verifica si hay detalles asociados
+        $queryCheck = "SELECT COUNT(*) as total FROM detalle_pedido WHERE id_producto = ?";
+        $stmtCheck = $this->conn->prepare($queryCheck);
+        $stmtCheck->bind_param("i", $this->id_producto);
+        $stmtCheck->execute();
+        $result = $stmtCheck->get_result();
+        $row = $result->fetch_assoc();
+        $stmtCheck->close();
+
+        if ($row['total'] > 0) {
+            // Hay pedidos asociados, muestra mensaje y no elimina
+            echo "<div class='alert alert-danger'>No se puede eliminar el producto porque tiene pedidos asociados.</div>";
+            return false;
+        }
+
+        // Si no hay detalles asociados, elimina normalmente
         $query = "DELETE FROM " . $this->table . " WHERE id_producto = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $this->id_producto);
@@ -73,4 +99,3 @@ class Producto {
         return $stmt->execute();
     }
 }
-?>
